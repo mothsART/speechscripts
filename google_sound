@@ -10,15 +10,13 @@ if __name__ == "__main__":
         exit(0)
     text = sys.argv[1]
     if text in ['--help', '-h']:
-        print('%s version %s' % (conf.app_name, __version__))
-        print('')
-        print('Usage : %s-cli "[text to read]" [.mp3 path] [optionnal lang]')
+        print('Usage : /google_sound "[text to read]" [.mp3 path] [optionnal lang : default "fr"]')
         print('')
         print('Common flags:')
         print(' -h   --help                   show usage information')
         exit(0)
     if len(sys.argv) == 2:
-        print("a secong argument is missing : .wav path")
+        print("a secong argument is missing : .mp3 path")
         exit(0)
     lang = "fr"
     if len(sys.argv) > 3:
