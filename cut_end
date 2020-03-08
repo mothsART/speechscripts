@@ -1,0 +1,31 @@
+#!/usr/bin/python3
+
+import sys
+from datetime import datetime, timedelta
+from subprocess import Popen, PIPE
+
+if __name__ == "__main__":
+    if len(sys.argv) <= 1:
+        print("first argument is mising for the text to read")
+        exit(0)
+    path = sys.argv[1]
+    ffprobe = Popen(
+        "ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 -sexagesimal %s" % path,
+        shell = True,
+        stdout = PIPE
+    )
+    length = ffprobe.stdout.readlines()[0].decode("utf-8").strip()
+    print('    lenght: ', length)
+    date_time_length = datetime.strptime(length, '%H:%M:%S.%f')
+    minus_length = 1000000
+    new_date_time = date_time_length - timedelta(microseconds=minus_length)
+    new_length = new_date_time.isoformat()[12:]
+    print('new length: ', new_length)
+    cmd = "ffmpeg -y -i test.wav -to %s %s" % (new_length, path)
+    print(cmd)
+    ffmpeg = Popen(
+        cmd,
+        shell = True,
+        stdout = PIPE
+    )
+    ffmpeg.stdout.readlines()
